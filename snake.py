@@ -19,15 +19,14 @@ class Snake:
         self.window_height = 600
         self.score = 0
         self.direction = 'RIGHT'
-        self.change_direction = self.direction
         self.screen = pygame.display.set_mode((self.window_width,self.window_height))
         pygame.display.set_caption('Chandu Dhondi - Snake Game')
         self.screen_rect = self.screen.get_rect()
         self.clock = pygame.time.Clock()
 
-    def fruit(self):
-        self.image = pygame.image.load('egg.bmp')
-        self.screen.blit(self.image,(self.fruit_x,self.fruit_y))
+    # def fruit(self):
+    #     self.image = pygame.image.load('egg.bmp')
+    #     self.screen.blit(self.image,(self.fruit_x,self.fruit_y))
 
     def move(self):
         self.fruit_x = random.randint(0,40)*10
@@ -64,8 +63,6 @@ class Snake:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            elif event.type == pygame.K_q:
-                sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
                     self.direction = 'right'
@@ -75,6 +72,8 @@ class Snake:
                     self.direction = 'up'
                 elif event.key == pygame.K_DOWN:
                     self.direction = 'down'
+                elif event.type == pygame.K_q:
+                    sys.exit()
     	
         #moving continuously
         if self.direction == 'right': 
@@ -94,6 +93,7 @@ class Snake:
             self.move()
         else: 
             self.snake_body.pop()
+            
         self.color = random.choice(['violet','indigo','blue','green','yellow','orange','red'])
 
         for i in self.snake_body:
@@ -110,7 +110,7 @@ class Snake:
             pygame.quit()
 
         #if snake touches the body
-        for j in self.snake_body[3:]:
+        for j in self.snake_body[1:]:
             if self.snake_position[0] == j[0] and self.snake_position[1] == j[1]:
                 self.game_over()
                 time.sleep(3)
@@ -123,7 +123,7 @@ class Snake:
             self.show_score()
             self.snake = pygame.draw.rect(self.screen,'green',pygame.Rect((self.snake_position[0],self.snake_position[1]),(15,15)))
             self.fruit = pygame.draw.rect(self.screen,'yellow',pygame.Rect((self.fruit_x,self.fruit_y),(15,15)))
-            pygame.display.update() 
+            pygame.display.flip() 
             self.clock.tick(10)
 
 
